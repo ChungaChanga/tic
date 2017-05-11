@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="root"></div>
+
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.slim.js'>
+      </script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.slim.js.map'>
+      </script>
+      
+      
+      <script id='d' roomId={{roomId}}>
+        var roomId = document.getElementById('d').getAttribute('roomId');
+        const socket = io.connect('localhost:8080');
+        socket.on('connect', onConnect);
+        var roomId;
+        function onStep() {
+          socket.to(roomId).emit('made step', {x:0, y:0});
+          
+        }
+        function onConnect() {
+          var firstStep = true;
+          /*Если приложение инициализировано без roomId
+          просим сервер создать новую комнату и переместить нас в нее*/
+          //if (!this.props.roomId) {
+          if (!roomId) {
+            roomId = 'room' + socket.id;
+            var p = document.createElement('p');
+            p.innerHTML = 'localhost:8080/room/'+socket.id;
+            document.body.appendChild(p);
+            socket.emit('waiting opponent', { 
+              'roomId': roomId
+            })
+          /*Иначе, присоединяемся просим поместить нас в уже созданную комнату*/
+          } else {
+            //roomId = this.props.roomId;
+           // roomId = this.props.roomId;
+            socket.emit('opponent came', { 
+              'roomId': roomId
+            })
+          }
+          socket.on('game started', startGame(firstStep)) 
+        }
+        
+        
+        /*socket.on('message', function(data) {
+          console.log(data);
+        })*/
+      </script>
+  </body>
+  
+</html>

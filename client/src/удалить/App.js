@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './Game.css';
 //import Board from './components/Board.js';
-//import Game from './components/Game.js';
-import Game from './components/myGame3.js';
+import Game from './components/Game.js';
 import Home from './components/Home.js';
 
 

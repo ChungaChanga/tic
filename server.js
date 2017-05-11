@@ -7,6 +7,11 @@ const fs = require('fs');
 const ReactDOMServer  = require('react-dom/server');
 const React  = require('react');
 //const Link = require('../client/src/Link.js');
+
+var handlebars = require('express-handlebars').create();
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
+
 app.set('port', 8080);
 app.use(express.static('client'));
 
@@ -23,42 +28,47 @@ app.use(express.static('client'));
 //var link = <Link roomId="5"/>;
 //console.log(typeof Component)
 app.get('/', function(req, res) {
-  var linkComponent = React.createElement(
-    'h1',
-    null,
-    'Ссылка: ' + req.params.roomId
-  )
-  var link = ReactDOMServer.renderToString(linkComponent);
-  res.send(link);
+  //Отправка приложения с предустановленным состоянием: ожидание соперника
+  //res.sendFile(__dirname + '/index1.html');
+  res.render('index1.handlebars', {roomId: null})
+})
+app.get('/room/:roomId', function(req, res) {
+  //Отправка приложения с предустановленным состоянием игра началась:
+  //roomId для соккета, статус active для приложения
+  //let roomId = req.params.roomId;
+  //res.sendFile(__dirname + '/index1.html');
+   res.render('index1.handlebars', {roomId: req.params.roomId})
 })
 app.get('/io', function(req, res) {
   //res.type('text/html');
-  //res.send(io.);
-  res.sendFile(__dirname + '/client/build/io.html');
+ 
+  //res.send(io.sockets.adapter.rooms);
+  //res.sendFile(__dirname + '/client/build/io.html');
   //console.log(io)
 })
-app.get('/:roomId', function(req, res) {
-  res.sendFile(__dirname + '/client/build/home.html');
- // res.sendFile(__dirname + '/client/index.html');
-})
-io.on('connection', function(client){
-  client.join('Game', function() {
-    client.join('room 1');
-    client.join('room 2', function() {
-      //client.emit('rooms', io.rooms);
-      var n = io.of('/');
-      console.log(n.sockets)
-    });
-   // console.log(client.rooms)
-  });
-  //console.log('New client connected with id:' + client.id);
-  
-  
-  //client.emit('rooms', client.rooms);
-  client.on('message', function(data) {
-    io.sockets.to('Game').emit('message', 'Step ' + step);
+
+io.on('connection', function(socket){
+  socket.on('Waiting opponent', function(data) {
+    socket.join(data.roomId);
   })
+  socket.on('opponent came', function(data) {
+    socket.join(data.roomId);
+    io.to(data.roomId).emit('game started');
+   // io.to(roomId.slice(4)).emit('made move', {coo})
+  })
+  //client.emit('conn')
+  /*
+  client.join('Game');
+  console.log('New client connected with id:' + client.id);
+  io.send(io.sockets.adapter.rooms);
+  client.on('disconnect', function() {
+    io.send('User ' + client.id + ' disconnect');
+    io.send(io.sockets.adapter.rooms);
+    console.log(io.sockets.adapter.rooms)
+  })
+  */
 })
+
 
 
 server.listen(app.get('port'), function() {

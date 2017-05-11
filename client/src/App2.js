@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './Game.css';
 //import Board from './components/Board.js';
-//import Game from './components/Game.js';
-import Game from './components/myGame3.js';
+import myGame2 from './components/myGame2.js';
 import Home from './components/Home.js';
 
 
-class App extends Component {
+class App2 extends Component {
   constructor(props) {
     var page = '';
     super(props);
@@ -24,7 +23,7 @@ class App extends Component {
   render() {
     switch (this.state.page) {
       case 'Home': return <Home roomId={this.props.roomId}/>;
-      case 'Game': return <Game roomId={this.props.roomId}/>; 
+      case 'Game': return <myGame2 roomId={this.props.roomId}/>; 
     }
   }
 }
@@ -35,4 +34,4 @@ class App extends Component {
 
 
 
-export default App;
+export default App2;
