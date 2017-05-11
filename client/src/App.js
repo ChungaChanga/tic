@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './Game.css';
 //import Board from './components/Board.js';
 //import Game from './components/Game.js';
-import Game from './components/myGame3.js';
+import Room from './components/myGame3.js';
 import Home from './components/Home.js';
 
 
@@ -22,10 +22,7 @@ class App extends Component {
     console.log(this.state)
   }
   render() {
-    switch (this.state.page) {
-      case 'Home': return <Home roomId={this.props.roomId}/>;
-      case 'Game': return <Game roomId={this.props.roomId}/>; 
-    }
+    return <Room roomId={this.props.roomId} firstStep={this.props.firstStep}/>; 
   }
 }
 

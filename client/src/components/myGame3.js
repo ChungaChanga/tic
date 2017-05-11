@@ -86,7 +86,13 @@ class Game extends Component {
     super(props);
     this.n = 4;
     this.size = 9;
-    //this.isStepX = true;
+    this.playerX = {
+      
+    }
+    this.playerO = {
+      
+    }
+    //this.isMeStep = true;
   }
  render() {
    return (
@@ -94,30 +100,28 @@ class Game extends Component {
    );
  }
 }
+class Room extends Component {
+ constructor(props) {
+    super(props);
+  }
+ /*connect() {
+   const socket = io.connect('localhost:8080');
+   socket.on('connect', onConnect);
+   function onConnect() {
+     this.player = socket.id;
+   }
+ }*/
+ render() {
+   return (
+    <div className="room">
+      <Game />
+     
+    </div>
+   );
+ }
+}
 
 // ========================================
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
 
-
-
-
-export default Game;
+export default Room;
